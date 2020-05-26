@@ -23,6 +23,7 @@ from __future__ import print_function
 import collections
 
 from bert import tokenization
+from bert import bert_tokenization
 import tagging
 import tagging_converter
 import tensorflow as tf
@@ -120,7 +121,7 @@ class BertExampleBuilder(object):
       converter: Converter from text targets to tags.
     """
     self._label_map = label_map
-    self._tokenizer = tokenization.FullTokenizer(vocab_file,
+    self._tokenizer = bert_tokenization.FullTokenizer(vocab_file,
                                                  do_lower_case=do_lower_case)
     self._max_seq_length = max_seq_length
     self._converter = converter
