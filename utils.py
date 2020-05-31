@@ -56,6 +56,8 @@ def yield_sources_and_targets(
     yield_example_fn = _yield_wikisplit_examples
   elif input_format == 'discofuse':
     yield_example_fn = _yield_discofuse_examples
+  elif input_format == 'wikisplit-fuse':
+    yield_example_fn = _yield_wikisplit_fuse_examples
   else:
     raise ValueError('Unsupported input_format: {}'.format(input_format))
 
@@ -71,6 +73,16 @@ def _yield_wikisplit_examples(
     for line in f:
       source, target = line.rstrip('\n').split('\t')
       yield [source], target
+
+def _yield_wikisplit_fuse_examples(
+    input_file):
+    # The Wikisplit format expects a TSV file with the source on the first and the
+    # target on the second column. 
+    # This is flipped for the wikisplit_fuse format so that the model learns to fuse sentences
+    with tf.io.gfile.GFile(input_file) as f:
+      for line in f:
+        source, target = line.rstrip('\n').split('\t')
+        yield [target], source
 
 
 def _yield_discofuse_examples(
